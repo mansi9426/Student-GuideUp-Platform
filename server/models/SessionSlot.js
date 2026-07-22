@@ -44,6 +44,17 @@ const sessionSlotSchema =
           "one-to-one",
       },
 
+      meetingPlatform: {
+  type: String,
+  default: "",
+},
+
+
+      meetingLink: {
+  type: String,
+  default: "",
+},
+
       capacity: {
         type: Number,
 
@@ -51,32 +62,38 @@ const sessionSlotSchema =
       },
 
       bookedStudents: [
-  {
-    studentId: {
-      type:
-        mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
+        {
+          studentId: {
+            type:
+              mongoose.Schema.Types
+                .ObjectId,
 
-    status: {
-      type: String,
+            ref: "User",
+          },
 
-      enum: [
-        "pending",
-        "accepted",
-        "rejected",
+          status: {
+            type: String,
+
+            enum: [
+              "pending",
+              "accepted",
+              "rejected",
+              "completed",
+              "cancelled",
+            ],
+
+            default:
+              "pending",
+          },
+
+          bookedAt: {
+            type: Date,
+
+            default:
+              Date.now,
+          },
+        },
       ],
-
-      default: "pending",
-    },
-
-    bookedAt: {
-      type: Date,
-
-      default: Date.now,
-    },
-  },
-],
     },
 
     {

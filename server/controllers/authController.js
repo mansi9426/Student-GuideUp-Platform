@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 
 // REGISTER USER
 const registerUser = async (req, res) => {
@@ -93,7 +94,114 @@ const loginUser = async (req, res) => {
   }
 };
 
+const forgotPassword =
+  async (req, res) => {
+
+    try {
+
+      const { email } =
+        req.body;
+
+      const user =
+        await User.findOne({
+          email,
+        });
+
+      if (!user) {
+
+        return res
+          .status(404)
+          .json({
+            message:
+              "User not found",
+          });
+
+      }
+
+      const resetToken =
+        crypto
+          .randomBytes(32)
+          .toString("hex");
+
+      user.resetPasswordToken =
+        resetToken;
+
+      user.resetPasswordExpires =
+        Date.now() +
+        3600000;
+
+      await user.save();
+
+      res.json({
+        message:
+          "Reset token generated",
+        resetToken,
+      });
+
+    } catch (error) {
+
+      res.status(500).json({
+        message:
+          error.message,
+      });
+
+    }
+  };
+
+ const resetPassword =
+  async (req, res) => {
+
+    try {
+
+      const {
+        email,
+        password,
+      } = req.body;
+
+      const user =
+        await User.findOne({
+          email,
+        });
+
+      if (!user) {
+
+        return res
+          .status(404)
+          .json({
+            message:
+              "User not found",
+          });
+
+      }
+
+      const hashedPassword =
+        await bcrypt.hash(
+          password,
+          10
+        );
+
+      user.password =
+        hashedPassword;
+
+      await user.save();
+
+      res.json({
+        message:
+          "Password updated successfully",
+      });
+
+    } catch (error) {
+
+      res.status(500).json({
+        message:
+          error.message,
+      });
+
+    }
+  };
 module.exports = {
   registerUser,
   loginUser,
+  forgotPassword,
+  resetPassword,
 };

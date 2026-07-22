@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const userSchema =
   new mongoose.Schema({
     name: {
@@ -60,7 +59,16 @@ isApproved: {
   default: false,
 },
 
+resetPasswordToken: {
+  type: String,
+},
+
+resetPasswordExpires: {
+  type: Date,
+},
+
   });
+  
 
 module.exports = mongoose.model(
   "User",

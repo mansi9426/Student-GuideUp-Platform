@@ -12,10 +12,11 @@ const {
   updateBookingStatus,
   getMentorStats,
   getStudentBookings,
+  completeSession,
+  cancelSession,
 } = require(
   "../controllers/sessionSlotController"
 );
-
 /*
 ====================
 Create Slot
@@ -84,6 +85,27 @@ Accept / Reject Booking
 router.put(
   "/:slotId/booking/:bookingId",
   updateBookingStatus
+);
+
+
+/*
+====================
+Complete Session
+====================
+*/
+router.put(
+  "/:slotId/booking/:bookingId/complete",
+  completeSession
+);
+
+/*
+====================
+Cancel Session
+====================
+*/
+router.put(
+  "/:slotId/booking/:bookingId/cancel",
+  cancelSession
 );
 
 router.put(

@@ -1,5 +1,9 @@
 const SessionSlot =
   require("../models/SessionSlot");
+const Feedback =
+  require("../models/Feedback");
+const User =
+  require("../models/User");
 
 /*
 ====================
@@ -49,7 +53,7 @@ Get All Slots
 exports.getSlots =
   async (req, res) => {
     try {
-
+      
       const slots =
         await SessionSlot.find()
           .populate(
@@ -216,16 +220,75 @@ exports.getMentorStats =
       const totalSlots =
         slots.length;
 
-      let totalStudents = 0;
+      const feedbacks =
+  await Feedback.find({
+    mentorId,
+  });
+
+const averageRating =
+  feedbacks.length > 0
+    ? (
+        feedbacks.reduce(
+          (sum, feedback) =>
+            sum +
+            feedback.rating,
+          0
+        ) /
+        feedbacks.length
+      ).toFixed(1)
+    : 0;
+
+    
+     let totalStudents = 0;
+
+slots.forEach((slot) => {
+
+  slot.bookedStudents.forEach((booking) => {
+
+    if (
+      booking.status === "accepted"
+    ) {
+      totalStudents++;
+    }
+
+  });
+
+});
+
+let pendingRequests = 0;
+let acceptedSessions = 0;
 
       slots.forEach((slot) => {
-        totalStudents +=
-          slot.bookedStudents.length;
+
+
+        slot.bookedStudents.forEach(
+          (booking) => {
+
+            if (
+              booking.status ===
+              "pending"
+            ) {
+              pendingRequests++;
+            }
+
+            if (
+              booking.status ===
+              "accepted"
+            ) {
+              acceptedSessions++;
+            }
+
+          }
+        );
+
       });
 
       res.json({
         totalSlots,
         totalStudents,
+        pendingRequests,
+        acceptedSessions,
+        averageRating,
       });
 
     } catch (error) {
@@ -351,6 +414,11 @@ exports.updateBookingStatus =
               slot.mentorId,
             status:
               booking.status,
+            meetingPlatform:
+  slot.meetingPlatform,
+
+meetingLink:
+  slot.meetingLink,
           });
 
         }
@@ -370,3 +438,201 @@ exports.updateBookingStatus =
 
     }
   };
+
+  /*
+====================
+Complete Session
+====================
+*/
+exports.completeSession =
+  async (req, res) => {
+
+    try {
+
+      const slot =
+        await SessionSlot.findById(
+          req.params.slotId
+        );
+
+      if (!slot) {
+
+        return res
+          .status(404)
+          .json({
+            message:
+              "Slot not found",
+          });
+
+      }
+
+      const booking =
+        slot.bookedStudents.find(
+          (b) =>
+            b._id.toString() ===
+            req.params.bookingId
+        );
+
+      if (!booking) {
+
+        return res
+          .status(404)
+          .json({
+            message:
+              "Booking not found",
+          });
+
+      }
+
+      booking.status =
+        "completed";
+
+      await slot.save();
+
+      res.json({
+        message:
+          "Session completed",
+      });
+
+    } catch (error) {
+
+  console.log(
+    "BOOKING ERROR:",
+    error
+  );
+
+  res.status(500).json({
+    message:
+      error.message,
+  });
+
+}
+  };
+
+/*
+====================
+Cancel Session
+====================
+*/
+exports.cancelSession =
+  async (req, res) => {
+
+    try {
+
+      const slot =
+        await SessionSlot.findById(
+          req.params.slotId
+        );
+
+      if (!slot) {
+
+        return res
+          .status(404)
+          .json({
+            message:
+              "Slot not found",
+          });
+
+      }
+
+      const booking =
+        slot.bookedStudents.find(
+          (b) =>
+            b._id.toString() ===
+            req.params.bookingId
+        );
+
+      if (!booking) {
+
+        return res
+          .status(404)
+          .json({
+            message:
+              "Booking not found",
+          });
+
+      }
+
+      booking.status =
+        "cancelled";
+
+      await slot.save();
+
+      res.json({
+        message:
+          "Session cancelled",
+      });
+
+    } catch (error) {
+
+      console.log(error);
+
+      res.status(500).json({
+        message:
+          "Failed to cancel session",
+      });
+
+    }
+  };
+
+  
+  exports.cancelSession =
+  async (req, res) => {
+
+    try {
+
+      const slot =
+        await SessionSlot.findById(
+          req.params.slotId
+        );
+
+      if (!slot) {
+
+        return res
+          .status(404)
+          .json({
+            message:
+              "Slot not found",
+          });
+
+      }
+
+      const booking =
+        slot.bookedStudents.find(
+          (b) =>
+            b._id.toString() ===
+            req.params.bookingId
+        );
+
+      if (!booking) {
+
+        return res
+          .status(404)
+          .json({
+            message:
+              "Booking not found",
+          });
+
+      }
+
+      booking.status =
+        "cancelled";
+
+      await slot.save();
+
+      res.json({
+        message:
+          "Session cancelled",
+      });
+
+    } catch (error) {
+
+      console.log(error);
+
+      res.status(500).json({
+        message:
+          "Failed to cancel session",
+      });
+
+    }
+  };
+  

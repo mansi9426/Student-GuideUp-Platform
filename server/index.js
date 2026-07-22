@@ -4,6 +4,7 @@ const { Server } = require("socket.io");
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const path = require("path");
 
 require("dotenv").config();
 
@@ -18,15 +19,34 @@ const messageRoutes =
   require(
     "./routes/messageRoutes"
   );
+  const noteRoutes =
+  require(
+    "./routes/noteRoutes"
+  );
 const sessionSlotRoutes =
   require(
     "./routes/sessionSlotRoutes"
   );
+const feedbackRoutes =
+  require(
+    "./routes/feedbackRoutes"
+  );
+const adminRoutes = require("./routes/adminRoutes");
+
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(
+  "/uploads",
+  express.static(
+    path.join(
+      __dirname,
+      "uploads"
+    )
+  )
+);
 
 mongoose
   .connect(process.env.MONGO_URL)
@@ -52,6 +72,18 @@ app.use(
   "/api/messages",
   messageRoutes
 );
+
+app.use(
+  "/api/notes",
+  noteRoutes
+);
+
+app.use(
+  "/api/feedback",
+  feedbackRoutes
+);
+
+app.use("/api/admin", adminRoutes);
 
 app.get("/", (req, res) => {
   res.send("Server Running");
