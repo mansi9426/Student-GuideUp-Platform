@@ -177,40 +177,103 @@ console.log(
 
 <p className="text-sm mt-2">
   Status:
-  <span className="font-bold ml-2 text-yellow-600">
-    {student.status}
-  </span>
+  <span
+  className={`font-bold ml-2
+    ${
+      student.status === "accepted"
+        ? "text-green-600"
+        : student.status === "rejected"
+        ? "text-red-600"
+        : student.status === "completed"
+        ? "text-blue-600"
+        : student.status === "cancelled"
+        ? "text-gray-600"
+        : "text-yellow-600"
+    }`}
+>
+  {student.status}
+</span>
 </p> 
-<div className="flex gap-2 mt-3">
+   {student.status === "pending" && (
 
-  <button
-    onClick={() =>
-      updateBookingStatus(
-        session._id,
-        student._id,
-        "accepted"
-      )
-    }
-    className="bg-green-600 text-white px-3 py-1 rounded"
-  >
-    Accept
-  </button>
+  <div className="flex gap-2 mt-3">
 
-  <button
-    onClick={() =>
-      updateBookingStatus(
-        session._id,
-        student._id,
-        "rejected"
-      )
-    }
-    className="bg-red-600 text-white px-3 py-1 rounded"
-  >
-    Reject
-  </button>
+    <button
+      onClick={() =>
+        updateBookingStatus(
+          session._id,
+          student._id,
+          "accepted"
+        )
+      }
+      className="bg-green-600 text-white px-3 py-1 rounded"
+    >
+      Accept
+    </button>
 
-</div>
+    <button
+      onClick={() =>
+        updateBookingStatus(
+          session._id,
+          student._id,
+          "rejected"
+        )
+      }
+      className="bg-red-600 text-white px-3 py-1 rounded"
+    >
+      Reject
+    </button>
 
+    <button
+  onClick={() =>
+    updateBookingStatus(
+      session._id,
+      student._id,
+      "completed"
+    )
+  }
+  className="bg-blue-600 text-white px-3 py-1 rounded"
+>
+  Complete
+</button>
+
+  </div>
+
+)}
+
+{student.status === "accepted" && (
+
+  <div className="flex gap-2 mt-3">
+
+    <button
+      onClick={() =>
+        updateBookingStatus(
+          session._id,
+          student._id,
+          "completed"
+        )
+      }
+      className="bg-blue-600 text-white px-3 py-1 rounded"
+    >
+      Complete
+    </button>
+
+    <button
+      onClick={() =>
+        updateBookingStatus(
+          session._id,
+          student._id,
+          "cancelled"
+        )
+      }
+      className="bg-gray-600 text-white px-3 py-1 rounded"
+    >
+      Cancel
+    </button>
+
+  </div>
+
+)}
                     </div>
 
                   )

@@ -9,14 +9,18 @@ function CreateSlot() {
     );
 
   const [formData, setFormData] =
-    useState({
-      title: "",
-      date: "",
-      time: "",
-      sessionType: "one-to-one",
-      capacity: 1,
-    });
+  useState({
+    title: "",
+    date: "",
+    time: "",
+    sessionType: "one-to-one",
+    capacity: 1,
 
+    meetingPlatform:
+      "Google Meet",
+
+    meetingLink: "",
+  });
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -29,6 +33,34 @@ function CreateSlot() {
     async (e) => {
 
       e.preventDefault();
+
+      if (
+  !formData.meetingLink
+) {
+
+  alert(
+    "Meeting Link Required"
+  );
+
+  return;
+
+}
+
+try {
+
+  new URL(
+    formData.meetingLink
+  );
+
+} catch {
+
+  alert(
+    "Enter Valid Meeting Link"
+  );
+
+  return;
+
+}
 
       try {
 
@@ -113,7 +145,32 @@ function CreateSlot() {
           className="border p-3 w-full"
           onChange={handleChange}
         />
+        <select
+  name="meetingPlatform"
+  className="border p-3 w-full"
+  onChange={handleChange}
+>
 
+  <option>
+    Google Meet
+  </option>
+
+  <option>
+    Zoom
+  </option>
+
+  <option>
+    Microsoft Teams
+  </option>
+
+</select>
+        <input
+  type="url"
+  name="meetingLink"
+  placeholder="Paste Meeting Link"
+  className="border p-3 w-full"
+  onChange={handleChange}
+/>
         <button
           type="submit"
           className="bg-black text-white px-6 py-3 rounded"

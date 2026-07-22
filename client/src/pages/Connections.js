@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Connections() {
@@ -9,6 +10,8 @@ function Connections() {
   const currentUser = JSON.parse(
   localStorage.getItem("user")
 );
+
+const navigate = useNavigate();
 
   useEffect(() => {
     fetchConnections();
@@ -226,8 +229,13 @@ setConnections(
 
                 <button
   onClick={() =>
-    window.location.href =
-      `/chat/${connection.mentorId._id}`
+    navigate(
+      `/chat/${
+        currentUser.role === "mentor"
+          ? connection.menteeId?._id
+          : connection.mentorId?._id
+      }`
+    )
   }
   className="flex-1 bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition"
 >

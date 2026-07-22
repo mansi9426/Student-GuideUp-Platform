@@ -11,12 +11,13 @@ function Navbar() {
 
   // Login/Register page par Navbar hide
   if (
-    location.pathname === "/login" ||
-    location.pathname === "/register" ||
-    !token
-  ) {
-    return null;
-  }
+  location.pathname === "/login" ||
+  location.pathname === "/register" ||
+  location.pathname === "/admin" ||
+  !token
+) {
+  return null;
+}
    console.log(user);
   const logoutHandler = () => {
     localStorage.removeItem("token");
@@ -92,11 +93,11 @@ function Navbar() {
 
           {user?.role !== "admin" && (
   <Link
-    to="/chat"
-    className="hover:text-gray-300 transition"
-  >
-    Chat
-  </Link>
+  to="/connections"
+  className="hover:text-gray-300 transition"
+>
+  Chat
+</Link>
 )}
 
           {user?.role === "admin" && (
@@ -114,6 +115,33 @@ function Navbar() {
     className="hover:text-gray-300 transition"
   >
     Create Slot
+  </Link>
+)}
+
+        {user?.role === "mentor" && (
+  <Link
+    to="/upload-note"
+    className="hover:text-gray-300 transition"
+  >
+    Upload Notes
+  </Link>
+)}
+
+        {user?.role === "student" && (
+  <Link
+    to="/notes-library"
+    className="hover:text-gray-300 transition"
+  >
+    Notes
+  </Link>
+)}
+
+        {user?.role === "mentor" && (
+  <Link
+    to="/feedback"
+    className="hover:text-gray-300 transition"
+  >
+    Feedback
   </Link>
 )}
           <Link

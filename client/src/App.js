@@ -19,6 +19,18 @@ import RoleRoute from "./components/RoleRoute";
 import CreateSlot from "./pages/CreateSlot";
 import AvailableSessions from "./pages/AvailableSessions";
 import MyBookings from "./pages/MyBookings";
+import UploadNote from "./pages/UploadNote";
+import NotesLibrary from "./pages/NotesLibrary";
+import Feedback from "./pages/Feedback";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import AdminUsers from "./pages/AdminUsers";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminMentors from "./pages/AdminMentors";
+import AdminSessions from "./pages/AdminSessions";
+import AdminNotes from "./pages/AdminNotes";
+import AdminReports from "./pages/AdminReports";
+import AdminSettings from "./pages/AdminSettings";
 
 function App() {
   return (
@@ -44,6 +56,15 @@ function App() {
           path="/register"
           element={<Register />}
         />
+
+        <Route
+  path="/forgot-password"
+  element={<ForgotPassword />}
+/>
+       <Route
+  path="/reset-password/:email"
+  element={<ResetPassword />}
+/>
 
         {/* Protected Routes */}
 
@@ -106,13 +127,13 @@ function App() {
         />
 
         <Route
-          path="/chat"
-          element={
-            <ProtectedRoute>
-              <Chat />
-            </ProtectedRoute>
-          }
-        />
+  path="/chat/:id"
+  element={
+    <ProtectedRoute>
+      <Chat />
+    </ProtectedRoute>
+  }
+/>
 
         <Route
   path="/admin"
@@ -142,6 +163,16 @@ function App() {
     </ProtectedRoute>
   }
 />
+   <Route
+  path="/upload-note"
+  element={
+    <ProtectedRoute>
+      <RoleRoute allowedRoles={["mentor"]}>
+        <UploadNote />
+      </RoleRoute>
+    </ProtectedRoute>
+  }
+/>
 
     <Route
   path="/my-bookings"
@@ -153,6 +184,72 @@ function App() {
     </ProtectedRoute>
   }
 />
+    <Route
+  path="/notes-library"
+  element={
+    <ProtectedRoute>
+      <RoleRoute allowedRoles={["student"]}>
+        <NotesLibrary />
+      </RoleRoute>
+    </ProtectedRoute>
+  }
+/>
+ 
+  <Route
+  path="/feedback"
+  element={
+    <ProtectedRoute>
+      <RoleRoute allowedRoles={["mentor"]}>
+        <Feedback />
+      </RoleRoute>
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/admin/users"
+  element={
+    <AdminRoute>
+      <AdminUsers />
+    </AdminRoute>
+  }
+/>
+
+<Route
+  path="/admin/dashboard"
+  element={<AdminDashboard />}
+/>
+
+<Route
+  path="/admin/users"
+  element={<AdminUsers />}
+/>
+
+<Route
+  path="/admin/mentors"
+  element={<AdminMentors />}
+/>
+
+<Route
+  path="/admin/sessions"
+  element={<AdminSessions />}
+/>
+
+<Route
+  path="/admin/notes"
+  element={<AdminNotes />}
+/>
+
+<Route
+  path="/admin/reports"
+  element={<AdminReports />}
+/>
+
+<Route
+  path="/admin/settings"
+  element={<AdminSettings />}
+/>
+    
       </Routes>
 
     </BrowserRouter>

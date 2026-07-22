@@ -73,99 +73,93 @@ function Profile() {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-10">
 
-      <div className="bg-white shadow-2xl rounded-3xl p-8 w-full max-w-2xl">
+      <div className="bg-white shadow-xl rounded-3xl overflow-hidden w-full max-w-4xl">
 
         {/* Avatar */}
-        <div className="flex flex-col items-center">
+       {/* Profile Header */}
 
-          <div className="w-28 h-28 rounded-full bg-black text-white flex items-center justify-center text-5xl font-bold mb-4">
+<div className="bg-gradient-to-r from-gray-900 to-black text-white p-10">
 
-            {user?.name?.charAt(
-              0
-            )}
+  <div className="flex flex-col items-center">
 
-          </div>
+    <div className="w-24 h-24 rounded-full bg-white text-black flex items-center justify-center text-4xl font-bold shadow-lg">
 
-          <h1 className="text-4xl font-bold">
+      {user?.name?.charAt(0)}
 
-            {user?.name}
+    </div>
 
-          </h1>
+    <h1 className="text-4xl font-bold mt-4">
 
-          <p className="text-gray-500 mt-2">
+      {user?.name}
 
-            {user?.email}
+    </h1>
 
-          </p>
+    <p className="text-gray-300 mt-2">
 
-        </div>
+      {user?.email}
+
+    </p>
+
+    <span
+      className={`mt-4 px-4 py-1 rounded-full text-sm font-semibold ${
+        user?.isApproved
+          ? "bg-green-500 text-white"
+          : "bg-yellow-400 text-black"
+      }`}
+    >
+      {user?.isApproved
+        ? "Approved Mentor"
+        : "Pending Approval"}
+    </span>
+
+  </div>
+
+</div>
+
+<div className="p-8">
 
         {/* Info Cards */}
-        <div className="grid md:grid-cols-2 gap-5 mt-10">
+       <div className="grid md:grid-cols-2 gap-4 mt-6">
 
-          <div className="bg-gray-100 p-5 rounded-2xl">
+          <div className="bg-white border border-gray-200 rounded-xl p-4 h-28 shadow-sm hover:shadow-md transition">
+  <h3 className="text-xs font-semibold uppercase text-gray-500 mb-2">
+    College
+  </h3>
 
-            <h3 className="font-semibold text-gray-600 mb-2">
+  <p className="text-lg font-semibold text-gray-800">
+    {user?.college || "Not Added"}
+  </p>
+</div>
 
-              College
+          <div className="bg-white border border-gray-200 rounded-xl p-4 h-28 shadow-sm hover:shadow-md transition">
+  <h3 className="text-xs font-semibold uppercase text-gray-500 mb-2">
+    Department
+  </h3>
 
-            </h3>
+  <p className="text-lg font-semibold text-gray-800">
+    {user?.department || "Not Added"}
+  </p>
+</div>
 
-            <p>
+          <div className="bg-white border border-gray-200 rounded-xl p-4 h-28 shadow-sm hover:shadow-md transition">
+  <h3 className="text-xs font-semibold uppercase text-gray-500 mb-2">
+    Semester
+  </h3>
 
-              {user?.college}
+  <p className="text-lg font-semibold text-gray-800">
+    {user?.semester || "Not Added"}
+  </p>
+</div>
 
-            </p>
+          <div className="bg-white border border-gray-200 rounded-xl p-4 h-28 shadow-sm hover:shadow-md transition">
+  <h3 className="text-xs font-semibold uppercase text-gray-500 mb-2">
+    Role
+  </h3>
 
-          </div>
-
-          <div className="bg-gray-100 p-5 rounded-2xl">
-
-            <h3 className="font-semibold text-gray-600 mb-2">
-
-              Department
-
-            </h3>
-
-            <p>
-
-              {user?.department}
-
-            </p>
-
-          </div>
-
-          <div className="bg-gray-100 p-5 rounded-2xl">
-
-            <h3 className="font-semibold text-gray-600 mb-2">
-
-              Semester
-
-            </h3>
-
-            <p>
-
-              {user?.semester}
-
-            </p>
-
-          </div>
-
-          <div className="bg-gray-100 p-5 rounded-2xl">
-
-            <h3 className="font-semibold text-gray-600 mb-2">
-
-              Role
-
-            </h3>
-
-            <p className="capitalize">
-
-              {user?.role}
-
-            </p>
-
-          </div>
+  <p className="text-lg font-semibold text-gray-800 capitalize">
+    {user?.role}
+  </p>
+</div>
 
         </div>
 
@@ -240,6 +234,7 @@ function Profile() {
         </button>
 
       </div>
+    </div>
     </div>
   );
 }

@@ -23,22 +23,16 @@ function Chat() {
     useState("");
 
   useEffect(() => {
+  if (!id) return;
 
+  fetchMessages();
+
+  const interval = setInterval(() => {
     fetchMessages();
+  }, 2000);
 
-    const interval =
-      setInterval(() => {
-
-        fetchMessages();
-
-      }, 2000);
-
-    return () =>
-      clearInterval(
-        interval
-      );
-
-  }, []);
+  return () => clearInterval(interval);
+}, [id]);
 
   /*
   ========================
@@ -55,9 +49,11 @@ function Chat() {
     `http://localhost:5000/api/messages/${user._id}/${id}`
   );
 
-        setMessages(
-          res.data
-        );
+        const sortedMessages = res.data.sort(
+  (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+);
+
+setMessages(sortedMessages);
 
       } catch (error) {
 
@@ -124,7 +120,7 @@ function Chat() {
             (msg) => (
 
               <div
-                key={msg._id}
+               key={msg._id + msg.createdAt}
                 className={`flex
 
                 ${
